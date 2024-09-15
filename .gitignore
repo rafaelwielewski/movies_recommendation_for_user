@@ -1,0 +1,6 @@
+.venv
+ratings.csv
+movies.csv
+model_knn.pkl
+movies_pivot.pkl
+movies_sparse.pkl
