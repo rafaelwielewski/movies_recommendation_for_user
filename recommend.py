@@ -1,25 +1,12 @@
 import pandas as pd
 import numpy as np
-from scipy.sparse import csr_matrix
 import joblib
 
 # Carregar o modelo e os dados processados
 model_knn = joblib.load('model_knn.pkl')
 movies_pivot = joblib.load('movies_pivot.pkl')
 movies_sparse = joblib.load('movies_sparse.pkl')
-
-# Carregar as avaliações do usuário
-user_ratings = pd.read_csv('ratings_user.csv', low_memory=False)
-
-# Selecionar somente colunas que serão usadas
-user_ratings = user_ratings[['movieId', 'rating']]
-
-# Obter títulos dos filmes avaliados pelo usuário
 movies = pd.read_csv('movies.csv', low_memory=False)
-user_movies = movies[movies['movieId'].isin(user_ratings['movieId'])]['title'].tolist()
-
-# Obter notas dos filmes avaliados pelo usuário
-user_ratings_dict = dict(zip(movies[movies['movieId'].isin(user_ratings['movieId'])]['title'], user_ratings['rating']))
 
 # Função para recomendar filmes
 def recommend_movies(user_movies, user_ratings_dict, n_recommendations=10):
@@ -45,6 +32,17 @@ def recommend_movies(user_movies, user_ratings_dict, n_recommendations=10):
     recommended_movies = movies_pivot.index[recommended_indices].tolist()
     
     return recommended_movies
+
+# Usar o modelo para fazer recomendações
+
+# Carregar as avaliações do usuário
+user_ratings = pd.read_csv('ratings_user.csv', low_memory=False)
+# Selecionar somente colunas que serão usadas
+user_ratings = user_ratings[['movieId', 'rating']]
+# Obter títulos dos filmes avaliados pelo usuário
+user_movies = movies[movies['movieId'].isin(user_ratings['movieId'])]['title'].tolist()
+# Obter notas dos filmes avaliados pelo usuário
+user_ratings_dict = dict(zip(movies[movies['movieId'].isin(user_ratings['movieId'])]['title'], user_ratings['rating']))
 
 # Fazer recomendações
 recommended_movies = recommend_movies(user_movies, user_ratings_dict)

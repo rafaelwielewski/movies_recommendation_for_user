@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import csr_matrix
 import joblib
